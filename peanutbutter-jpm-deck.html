@@ -1,599 +1,801 @@
-<title>PeanutButter &amp; More</title>
+<title>PeanutButter</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500&family=DM+Mono:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=DM+Sans:wght@400;500&display=swap">
 
 <style>
-  :root{
-    --white:#F5F5F5;
-    --black:#1E1E1E;
-    --brown:#7B6649;
-    --ink-72:rgba(30,30,30,.72);
-    --ink-55:rgba(30,30,30,.55);
-    --ink-42:rgba(30,30,30,.42);
-    --hair:rgba(30,30,30,.16);
-    --hair-soft:rgba(30,30,30,.09);
-    --serif:"Libre Caslon Text","Libre Caslon",Georgia,"Times New Roman",serif;
-    --sans:"DM Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-    --mono:"DM Mono","SFMono-Regular",Menlo,Consolas,monospace;
-    color-scheme:light;
-  }
+:root{
+  --white:#F5F5F5;
+  --black:#1E1E1E;
+  --brown:#7B6649;
 
-  *{box-sizing:border-box}
+  --ink-80:rgba(30,30,30,.80);
+  --ink-62:rgba(30,30,30,.62);
+  --ink-46:rgba(30,30,30,.46);
+  --rule:rgba(30,30,30,.20);
+  --rule-soft:rgba(30,30,30,.10);
 
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    background:var(--white);
-    color:var(--black);
-    font-family:var(--serif);
-    -webkit-font-smoothing:antialiased;
-  }
-  .deck{
-    height:100svh;
-    overflow-y:scroll;
-    scroll-snap-type:y mandatory;
-  }
+  --serif:"Libre Caslon Text",Georgia,"Times New Roman",serif;
+  --sans:"DM Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--white);
+  color:var(--black);
+  font-family:var(--serif);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.deck{height:100svh;overflow-y:scroll;scroll-snap-type:y mandatory}
 
-  .slide{
-    height:100svh;
-    scroll-snap-align:start;
-    scroll-snap-stop:always;
-    display:grid;
-    place-items:center;
-    background:var(--white);
-    color:var(--black);
-  }
+.slide{
+  height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
+  display:grid;place-items:center;
+  background:var(--white);color:var(--black);
+}
+.slide.dark{
+  background:var(--black);color:var(--white);
+  --ink-80:rgba(245,245,245,.82);
+  --ink-62:rgba(245,245,245,.64);
+  --ink-46:rgba(245,245,245,.48);
+  --rule:rgba(245,245,245,.24);
+  --rule-soft:rgba(245,245,245,.12);
+}
 
+/* ================= the slide ================= */
+.stage{
+  width:min(100vw, calc(100svh * 16 / 9));
+  aspect-ratio:16/9;
+  container-type:size;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  padding:4.2cqw 6.2cqw 3.4cqw;
+
+  --fs-eyebrow:0.86cqw;
+  --fs-src:0.94cqw;
+  --fs-meta:1.10cqw;
+  --fs-anchor:1.62cqw;
+  --fs-lede:2.30cqw;
+  --fs-h2:3.30cqw;
+  --fs-h1:4.20cqw;
+  --fs-fig:6.60cqw;
+}
+
+.top{
+  display:flex;align-items:baseline;justify-content:space-between;gap:2cqw;
+  padding-bottom:.9cqw;border-bottom:1px solid var(--rule);
+}
+.eyebrow{
+  font-family:var(--sans);font-weight:500;font-size:var(--fs-eyebrow);
+  letter-spacing:.20em;text-transform:uppercase;color:var(--brown);
+}
+.dark .eyebrow{color:var(--ink-80)}
+.folio{
+  font-family:var(--sans);font-weight:400;font-size:var(--fs-eyebrow);
+  letter-spacing:.14em;color:var(--ink-46);font-variant-numeric:tabular-nums;
+}
+.body{align-self:stretch;align-content:space-between;display:grid;gap:3cqw;padding-top:2.6cqw;min-height:0}
+.body.top-aligned{align-content:start}
+.body>*:last-child{margin-bottom:2.2cqw}
+.foot{
+  display:flex;align-items:center;justify-content:flex-start;
+  padding-top:1.0cqw;border-top:1px solid var(--rule-soft);
+}
+.foot .mark{width:2.3cqw;min-width:26px;height:auto;display:block;flex:none}
+
+h1,h2{margin:0;font-family:var(--serif);font-weight:700;letter-spacing:-.010em}
+h1{font-size:var(--fs-h1);line-height:1.06;max-width:29ch;text-wrap:balance}
+h2{font-size:var(--fs-h2);line-height:1.08;max-width:24ch;text-wrap:balance}
+.lede{font-family:var(--serif);font-weight:700;font-size:var(--fs-lede);line-height:1.14;max-width:26ch;margin:0}
+
+.anchors{
+  margin:0;padding:0;list-style:none;display:grid;
+  grid-template-columns:repeat(3,1fr);gap:1.5cqw 3.2cqw;
+}
+.anchors>li{
+  font-family:var(--serif);font-weight:400;font-size:var(--fs-anchor);line-height:1.24;
+  padding-top:.9cqw;border-top:1px solid var(--rule);
+}
+.anchors.two{grid-template-columns:repeat(2,1fr)}
+
+/* four short lines */
+.lines{margin:0;padding:0;list-style:none;counter-reset:n;display:grid;gap:1.5cqw}
+.lines>li{
+  counter-increment:n;display:grid;grid-template-columns:3.4cqw 1fr;align-items:baseline;
+  font-family:var(--serif);font-weight:700;font-size:var(--fs-lede);line-height:1.16;
+  padding-top:1.1cqw;border-top:1px solid var(--rule);
+}
+.lines>li::before{
+  content:counter(n,decimal-leading-zero);
+  font-family:var(--sans);font-weight:500;font-size:var(--fs-eyebrow);
+  letter-spacing:.12em;color:var(--brown);
+}
+.dark .lines>li::before{color:var(--ink-62)}
+
+/* big figures */
+.figures{display:grid;grid-template-columns:repeat(3,1fr);gap:4cqw;align-items:end}
+.figure{display:grid;align-content:end;gap:.7cqw}
+.figure .n{
+  font-family:var(--serif);font-weight:700;font-size:var(--fs-fig);line-height:.94;
+  letter-spacing:-.022em;font-variant-numeric:tabular-nums;
+}
+.figure .d{font-family:var(--serif);font-weight:400;font-size:var(--fs-meta);line-height:1.3;color:var(--ink-80)}
+.figure .s{
+  font-family:var(--sans);font-weight:400;font-size:var(--fs-src);line-height:1.35;
+  color:var(--ink-62);padding-top:.6cqw;border-top:1px solid var(--rule);
+}
+
+/* six words */
+.words{
+  margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(6,1fr);
+  gap:2.2cqw;border-top:1px solid var(--rule);padding-top:1.2cqw;
+}
+.words>li{font-family:var(--serif);font-weight:700;font-size:var(--fs-anchor);line-height:1.2}
+
+.anchor-line{font-family:var(--serif);font-weight:400;font-size:var(--fs-anchor);line-height:1.3;margin:0}
+.fig-mid{font-size:calc(var(--fs-fig) * .58)}
+.stack-head{display:grid;gap:2cqw;align-content:start}
+.meta{font-family:var(--serif);font-weight:400;font-size:var(--fs-meta);line-height:1.4;margin:0;color:var(--ink-80)}
+.src-line{font-family:var(--sans);font-weight:400;font-size:var(--fs-src);letter-spacing:.02em;color:var(--ink-62);display:block;margin-top:.5cqw}
+.ph{color:var(--brown);white-space:nowrap}
+.dark .ph{color:inherit;border-bottom:1px solid var(--brown);padding-bottom:.06em}
+.figure .n .ph{border-bottom:0}
+
+.who{display:grid;gap:.6cqw;align-content:start}
+.who .nm{font-family:var(--serif);font-weight:700;font-size:var(--fs-lede);line-height:1.1}
+.who .rl{font-family:var(--sans);font-weight:400;font-size:var(--fs-eyebrow);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-46)}
+.who .bio{font-family:var(--serif);font-weight:400;font-size:var(--fs-meta);line-height:1.34;color:var(--ink-80)}
+
+.wordmark{width:19cqw;min-width:120px;height:auto;display:block}
+.wordmark-sm{width:11cqw;min-width:120px;height:auto;display:block}
+.foot-brand{padding-top:2.0cqw;justify-content:space-between}
+.foot-brand span{font-family:var(--sans);font-size:var(--fs-eyebrow);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-46)}
+
+.motif{width:1.5cqw;min-width:16px;height:auto;display:block;flex:none;overflow:visible}
+.motif-row{display:flex;align-items:center;gap:1.2cqw}
+.motif-row .hair{height:1px;background:var(--rule-soft);flex:1}
+
+.chart{width:100%;max-width:62cqw;height:auto;display:block;overflow:visible}
+.chart-wrap{display:grid;gap:1.2cqw;justify-items:start;align-content:center}
+
+/* ================= the notes ================= */
+.notes{
+  position:fixed;top:0;right:0;bottom:0;width:min(38vw,620px);z-index:30;
+  background:var(--black);color:var(--white);
+  overflow-y:auto;overscroll-behavior:contain;
+  transform:translateX(101%);visibility:hidden;pointer-events:none;
+  transition:transform .26s ease;
+  box-shadow:-1px 0 0 rgba(245,245,245,.22);
+}
+body.notes-open .slide.is-current .notes{transform:none;visibility:visible;pointer-events:auto}
+body.notes-open .slide.is-current{padding-right:min(38vw,620px)}
+body.notes-open .slide.is-current .stage{width:min(100%, calc(96svh * 16 / 9))}
+.notes-inner{padding:1.7rem 2rem 3rem;display:grid;gap:1.05rem}
+.notes-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:1.5rem;
+  font-family:var(--sans);font-size:.66rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(245,245,245,.52);border-bottom:1px solid rgba(245,245,245,.2);padding-bottom:.65rem;
+}
+.notes h4{
+  margin:.5rem 0 0;font-family:var(--sans);font-weight:500;font-size:.66rem;
+  letter-spacing:.18em;text-transform:uppercase;color:rgba(245,245,245,.52);
+}
+.notes p{
+  margin:0;font-family:var(--serif);font-weight:400;font-size:.95rem;line-height:1.62;
+  color:rgba(245,245,245,.90);max-width:96ch;
+}
+.notes p.say{color:#F5F5F5;font-weight:700}
+.notes ul{margin:0;padding:0;list-style:none;display:grid;gap:.5rem;max-width:96ch}
+.notes ul>li{
+  font-family:var(--serif);font-weight:400;font-size:.95rem;line-height:1.55;
+  color:rgba(245,245,245,.90);padding-left:1.1rem;position:relative;
+}
+.notes ul>li::before{content:"";position:absolute;left:0;top:.72em;width:.55rem;height:1px;background:var(--brown)}
+.notes b{font-weight:700;color:#F5F5F5}
+.notes cite{
+  display:block;font-family:var(--sans);font-style:normal;font-size:.72rem;letter-spacing:.02em;
+  color:rgba(245,245,245,.56);margin-top:.2rem;
+}
+.notes .ph{color:inherit;border-bottom:1px solid var(--brown);padding-bottom:.06em;white-space:normal}
+.notes .flag{
+  font-family:var(--sans);font-size:.78rem;line-height:1.5;
+  border-left:1px solid var(--brown);padding-left:.8rem;color:rgba(245,245,245,.86);max-width:96ch;
+}
+
+/* ================= chrome ================= */
+.hints{
+  position:fixed;right:1.2rem;bottom:1rem;z-index:40;
+  font-family:var(--sans);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(30,30,30,.36);pointer-events:none;transition:opacity .4s ease;
+}
+body.notes-open .hints{opacity:0}
+
+/* ================= mobile ================= */
+@media (max-width:860px), (orientation:portrait) and (max-width:1100px){
+  .deck{height:auto;overflow:visible;scroll-snap-type:none}
+  .slide{height:auto;scroll-snap-align:none;display:block}
   .stage{
-    width:min(100vw, calc(100svh * 16 / 9));
-    aspect-ratio:16/9;
-    container-type:size;
-    display:grid;
-    grid-template-rows:auto 1fr auto;
-    padding:5.2cqw 6.6cqw 4.4cqw;
+    width:100%;aspect-ratio:auto;container-type:inline-size;
+    padding:2rem 1.25rem 1.5rem;grid-template-rows:auto auto auto;
+    --fs-eyebrow:.62rem;--fs-src:.72rem;--fs-meta:.9rem;--fs-anchor:1rem;
+    --fs-lede:1.2rem;--fs-h2:1.55rem;--fs-h1:1.8rem;--fs-fig:2.6rem;
+  }
+  .body{gap:1.5rem;padding-top:1.3rem}
+  .anchors,.anchors.two{grid-template-columns:1fr;gap:.8rem}
+  .figures{grid-template-columns:1fr;gap:1.4rem;align-items:start}
+  .figure{align-content:start}
+  .words{grid-template-columns:1fr 1fr;gap:.8rem}
+  .lines>li{grid-template-columns:2rem 1fr;gap:.5rem}
+  .chart{max-width:100%}
+  .wordmark{width:170px}
+  .wordmark-sm{width:150px}
+  .motif{width:17px}
+  .foot .mark{width:26px}
+  .foot-brand{padding-top:1.2rem}
+  .hints{display:none}
+  .notes{
+    position:static;width:auto;height:auto;transform:none;visibility:visible;pointer-events:auto;
+    overflow:visible;box-shadow:none;
+  }
+  body.notes-open .slide.is-current{padding-right:0}
+  .notes-inner{padding:1.5rem 1.25rem 2rem}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.notes{transition:none}}
 
-    --fs-eyebrow:0.86cqw;
-    --fs-label:0.78cqw;
-    --fs-body:1.22cqw;
-    --fs-body-sm:1.02cqw;
-    --fs-lede:1.55cqw;
-    --fs-h2:3.05cqw;
-    --fs-h1:3.75cqw;
-    --fs-fig:2.9cqw;
-    --fs-fig-sm:1.9cqw;
+@media print{
+  .deck{height:auto;overflow:visible}
+  .slide{height:100vh;break-after:page}
+  .hints{display:none}
+  .notes{
+    position:static;width:auto;height:auto;transform:none;visibility:visible;overflow:visible;
+    background:#fff;color:#1E1E1E;box-shadow:none;break-before:page;break-after:page;
   }
-
-  /* ---- frame ---- */
-  .top{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:2cqw;
-    padding-bottom:1.05cqw;
-    border-bottom:1px solid var(--hair);
-  }
-  .eyebrow{
-    font-family:var(--sans);
-    font-size:var(--fs-eyebrow);
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--ink-55);
-  }
-  .folio{
-    font-family:var(--mono);
-    font-size:var(--fs-eyebrow);
-    letter-spacing:.10em;
-    color:var(--ink-42);
-  }
-
-  .body{
-    align-self:center;
-    align-content:start;
-    display:grid;
-    gap:2.1cqw;
-    padding:2.6cqw 0 0;
-  }
-
-  .foot{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:2cqw;
-    padding-top:1.05cqw;
-    border-top:1px solid var(--hair-soft);
-    font-family:var(--sans);
-    font-size:var(--fs-label);
-    letter-spacing:.15em;
-    text-transform:uppercase;
-    color:var(--ink-42);
-  }
-
-  /* ---- type ---- */
-  h1,h2{
-    margin:0;
-    font-family:var(--serif);
-    font-weight:400;
-    letter-spacing:-.012em;
-    line-height:1.14;
-    text-wrap:balance;
-  }
-  h1{font-size:var(--fs-h1); max-width:26ch}
-  h2{font-size:var(--fs-h2); max-width:30ch}
-
-  p{margin:0; font-size:var(--fs-body); line-height:1.58; color:var(--ink-72); max-width:62ch}
-  p.lede{font-size:var(--fs-lede); line-height:1.44; color:var(--black); max-width:44ch}
-  p.sm{font-size:var(--fs-body-sm); line-height:1.56; max-width:58ch}
-  p + p{margin-top:.85em}
-
-  .label{
-    font-family:var(--sans);
-    font-size:var(--fs-label);
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--ink-55);
-  }
-  .accent{color:var(--brown)}
-  .mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
-
-  /* ---- signature motif: two hairlines meeting at one node ---- */
-  .node-rule{
-    display:flex;
-    align-items:center;
-    gap:0;
-    width:100%;
-  }
-  .node-rule .h{height:1px; background:var(--hair); flex:1}
-  .node-rule .h.short{flex:0 0 8cqw}
-  .node-rule .node{
-    width:.46cqw; height:.46cqw;
-    background:var(--brown);
-    flex:0 0 auto;
-  }
-
-  /* ---- compositions ---- */
-  .two{
-    display:grid;
-    grid-template-columns:1.05fr 1fr;
-    gap:4.4cqw;
-    align-items:start;
-  }
-  .two.tight{grid-template-columns:1fr 1.15fr; gap:4cqw}
-  .stack{display:grid; align-content:start; gap:1.1cqw}
-  .stack.wide{gap:1.6cqw}
-
-  .seq{display:grid; align-content:start; gap:1.35cqw}
-  .step{
-    display:grid;
-    grid-template-columns:3.6cqw 1fr;
-    gap:1.4cqw;
-    align-items:start;
-    padding-top:1.1cqw;
-    border-top:1px solid var(--hair);
-  }
-  .step .n{
-    font-family:var(--mono);
-    font-size:var(--fs-label);
-    letter-spacing:.08em;
-    color:var(--ink-42);
-    padding-top:.35cqw;
-  }
-
-  .bands{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:2.2cqw 4.2cqw;
-    align-content:start;
-  }
-  .band{
-    display:grid;
-    align-content:start;
-    gap:.72cqw;
-    padding-top:.9cqw;
-    border-top:1px solid var(--hair);
-  }
-  .band p{font-size:.98cqw; line-height:1.52; max-width:none}
-
-  .figs{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:3cqw;
-    align-content:start;
-  }
-  .fig{display:grid; align-content:start; gap:.55cqw; padding-top:.9cqw; border-top:1px solid var(--hair)}
-  .fig .v{font-family:var(--serif); font-size:var(--fs-fig); line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
-  .fig .k{font-family:var(--sans); font-size:var(--fs-label); letter-spacing:.15em; text-transform:uppercase; color:var(--ink-55); line-height:1.4}
-
-  .people{display:grid; grid-template-columns:1fr 1fr; gap:4.2cqw; align-content:start}
-  .person{display:grid; align-content:start; gap:.7cqw; padding-top:.9cqw; border-top:1px solid var(--hair)}
-  .person .role{font-family:var(--sans); font-size:var(--fs-label); letter-spacing:.18em; text-transform:uppercase; color:var(--ink-55)}
-  .person .name{font-size:var(--fs-lede); line-height:1.2}
-
-  .pull{
-    display:grid;
-    align-content:start;
-    gap:1.2cqw;
-    padding-top:1.2cqw;
-    border-top:1px solid var(--brown);
-  }
-  .pull p{color:var(--black); max-width:40ch}
-  .pull p.accent{color:var(--brown)}
-  .step .label{margin-bottom:.42cqw}
-  .person .name{color:var(--ink-42)}
-
-  .wordmark{
-    font-family:var(--serif);
-    font-size:1.5cqw;
-    letter-spacing:-.01em;
-    line-height:1;
-  }
-
-  .refusals{display:grid; align-content:start; gap:.85cqw}
-  .refusal{
-    display:grid;
-    grid-template-columns:auto 1fr;
-    gap:1cqw;
-    align-items:baseline;
-    font-size:var(--fs-body-sm);
-    line-height:1.5;
-    color:var(--ink-72);
-  }
-  .refusal .mark{
-    font-family:var(--mono);
-    font-size:var(--fs-label);
-    color:var(--ink-42);
-    letter-spacing:.06em;
-  }
-
-  /* ---- key hints ---- */
-  .hints{
-    position:fixed;
-    right:1.4rem; bottom:1.2rem;
-    font-family:var(--sans);
-    font-size:.62rem;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:var(--ink-42);
-    background:var(--white);
-    padding:.4rem .6rem;
-    border:1px solid var(--hair-soft);
-    transition:opacity .5s ease;
-    pointer-events:none;
-    z-index:10;
-  }
-  .hints.gone{opacity:0}
-
-  a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--brown); outline-offset:3px}
-
-  @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    .hints{transition:none}
-  }
-
-  /* ---- mobile / portrait: drop the frame ---- */
-  @media (max-width:860px), (orientation:portrait){
-    .deck{height:auto; overflow:visible; scroll-snap-type:none}
-    .slide{height:auto; scroll-snap-align:none; display:block; border-bottom:1px solid var(--hair-soft)}
-    .stage{
-      width:100%;
-      aspect-ratio:auto;
-      container-type:inline-size;
-      padding:2rem 1.25rem 2.5rem;
-      --fs-eyebrow:.62rem;
-      --fs-label:.6rem;
-      --fs-body:1rem;
-      --fs-body-sm:.92rem;
-      --fs-lede:1.15rem;
-      --fs-h2:1.6rem;
-      --fs-h1:1.75rem;
-      --fs-fig:1.8rem;
-    }
-    .top{padding-bottom:.75rem}
-    .body{padding-top:1.5rem; gap:1.5rem}
-    .foot{padding-top:1rem; margin-top:1.75rem}
-    .two,.two.tight,.bands,.people{grid-template-columns:1fr; gap:1.5rem}
-    .figs{grid-template-columns:1fr 1fr; gap:1.25rem}
-    .band p{font-size:.92rem}
-    .step{grid-template-columns:2rem 1fr; gap:.75rem; padding-top:.75rem}
-    .node-rule .h.short{flex:0 0 3rem}
-    .node-rule .node{width:5px;height:5px}
-    .wordmark{font-size:1.1rem}
-    .hints{display:none}
-  }
-
-  @media print{
-    @page{size:landscape; margin:0}
-    .deck{height:auto; overflow:visible}
-    .slide{height:auto; page-break-after:always; break-after:page}
-    .stage{width:100%; aspect-ratio:16/9}
-    .hints{display:none}
-  }
+  .notes p,.notes ul>li{color:#1E1E1E}
+  .notes b,.notes p.say{color:#000}
+  .notes-head,.notes h4{color:#6B6B6B;border-color:#CCC}
+  .notes cite,.notes .flag{color:#4A4A4A}
+}
 </style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="pb-word" viewBox="0 0 4426 500"><g clip-path="url(#pb-word-clip0_2591_224)">
+<path d="M4129.61 493.199V470.531L4177.86 457.902V211.14L4128.96 193.005V177.785L4260.12 147.021H4274.04V205.635L4276.63 208.549V457.902L4360.83 470.531V493.199H4129.61ZM4269.51 252.267L4270.48 208.549C4287.54 188.471 4304.38 173.143 4321 162.565C4337.84 151.77 4354.14 146.373 4369.9 146.373C4385.87 146.373 4399.15 150.907 4409.73 159.974C4420.31 169.041 4425.6 180.268 4425.6 193.653C4425.6 206.606 4421.71 217.509 4413.94 226.36C4406.38 234.996 4396.99 239.313 4385.77 239.313C4374.54 239.313 4363.96 235.32 4354.03 227.332C4347.77 221.934 4342.16 218.048 4337.19 215.674C4332.44 213.083 4327.37 211.788 4321.97 211.788C4314.41 211.788 4305.35 215.889 4294.77 224.093C4284.41 232.081 4275.99 241.472 4269.51 252.267Z" fill="#1E1E1E"/>
+<path d="M3924.2 500C3888.8 500 3857.81 492.875 3831.26 478.627C3804.92 464.162 3784.41 444.084 3769.73 418.394C3755.27 392.487 3748.04 362.586 3748.04 328.691C3748.04 292.638 3756.13 261.01 3772.32 233.808C3788.51 206.606 3810.97 185.341 3839.68 170.013C3868.61 154.685 3902.07 147.021 3940.07 147.021C3989.08 147.021 4026.32 160.298 4051.79 186.852C4077.48 213.191 4091.08 252.051 4092.59 303.432L4087.74 307.642H3807.94V278.497L3986.38 272.021C3988.1 267.487 3988.97 259.391 3988.97 247.733C3988.97 202.396 3969.97 179.728 3931.97 179.728C3907.15 179.728 3888.04 190.522 3874.65 212.111C3861.49 233.7 3854.9 264.356 3854.9 304.08C3854.9 390.436 3888.26 433.614 3954.97 433.614C4001.17 433.614 4037.54 417.854 4064.1 386.334L4081.91 401.554C4070.47 432.642 4050.82 456.822 4022.97 474.093C3995.34 491.364 3962.41 500 3924.2 500Z" fill="#1E1E1E"/>
+<path d="M3616.34 500C3583.09 500 3559.45 492.768 3545.42 478.303C3531.38 463.838 3524.37 440.63 3524.37 408.679V185.557H3479.03L3475.14 165.803L3604.35 67.3574L3624.11 70.5958V153.497H3723.2L3713.81 185.557H3624.11V402.202C3624.11 436.528 3637.49 453.692 3664.26 453.692C3671.82 453.692 3678.94 452.396 3685.64 449.806C3692.33 447.215 3698.48 442.573 3704.1 435.881L3718.99 456.606C3707.77 470.855 3693.19 481.649 3675.27 488.99C3657.36 496.33 3637.71 500 3616.34 500Z" fill="#1E1E1E"/>
+<path d="M3355.75 500C3322.51 500 3298.87 492.768 3284.83 478.303C3270.8 463.838 3263.79 440.63 3263.79 408.679V185.557H3218.45L3214.56 165.803L3343.77 67.3574L3363.53 70.5958V153.497H3462.62L3453.23 185.557H3363.53V402.202C3363.53 436.528 3376.91 453.692 3403.68 453.692C3411.24 453.692 3418.36 452.396 3425.05 449.806C3431.75 447.215 3437.9 442.573 3443.51 435.881L3458.41 456.606C3447.18 470.855 3432.61 481.649 3414.69 488.99C3396.77 496.33 3377.13 500 3355.75 500Z" fill="#1E1E1E"/>
+<path d="M2935.34 500C2901.88 500 2876.3 490.608 2858.6 471.826C2840.89 452.828 2832.04 424.978 2832.04 388.277V188.795L2784.11 175.842V153.497H2931.13V366.256C2931.13 395.617 2936.42 415.479 2947 425.842C2957.58 435.988 2973.02 441.062 2993.31 441.062C3006.7 441.062 3019.43 437.392 3031.52 430.051C3043.83 422.495 3053.33 410.945 3060.02 395.401V441.062C3045.34 458.333 3026.99 472.474 3004.97 483.484C2982.95 494.494 2959.74 500 2935.34 500ZM3045.77 500V452.396L3042.53 448.51V188.795L2997.52 175.842V153.497H3141.95V435.88L3190.53 453.691V468.264L3060.02 500H3045.77Z" fill="#1E1E1E"/>
+<path d="M2320.6 493.199V469.56L2375.33 455.311V36.9171L2320.6 23.3161V0H2536.6C2568.98 0 2595.86 2.1589 2617.23 6.47671C2638.82 10.5786 2656.85 17.0553 2671.31 25.9067C2687.94 36.4853 2700.78 49.9784 2709.85 66.386C2719.13 82.7936 2723.78 100.497 2723.78 119.495C2723.78 145.402 2713.41 167.422 2692.69 185.557C2671.96 203.476 2642.6 215.782 2604.6 222.474V225.065C2633.32 227.871 2658.47 235.427 2680.06 247.733C2701.65 260.039 2718.38 276.015 2730.25 295.661C2742.34 315.091 2748.39 337.327 2748.39 362.37C2748.39 382.016 2744.07 400.367 2735.43 417.422C2727.01 434.478 2715.46 448.51 2700.78 459.521C2684.38 471.611 2664.51 480.246 2641.2 485.427C2617.88 490.609 2586.9 493.199 2548.26 493.199H2320.6ZM2534.66 459.197C2566.39 459.197 2589.82 450.993 2604.93 434.586C2620.26 417.962 2627.92 392.055 2627.92 356.865C2627.92 319.301 2618.21 291.775 2598.78 274.288C2579.35 256.585 2549.34 247.733 2508.75 247.733H2485.43V420.984C2485.43 436.097 2488.89 446.244 2495.8 451.425C2502.92 456.606 2515.87 459.197 2534.66 459.197ZM2485.43 213.083H2492.56C2500.11 213.083 2506.59 212.975 2511.99 212.759C2517.6 212.327 2522.46 211.788 2526.56 211.14C2552.25 208.549 2572 199.698 2585.82 184.586C2599.64 169.257 2606.55 148.424 2606.55 122.086C2606.55 106.973 2604.17 93.9119 2599.42 82.9016C2594.89 71.8912 2588.3 62.9318 2579.67 56.0234C2570.39 48.4672 2558.84 43.0699 2545.02 39.8316C2531.2 36.3774 2515.23 34.6503 2497.09 34.6503H2485.43V213.083Z" fill="#1E1E1E"/>
+<path d="M2185.01 500C2151.77 500 2128.13 492.768 2114.09 478.303C2100.06 463.838 2093.04 440.63 2093.04 408.679V185.557H2047.71L2043.82 165.803L2173.03 67.3574L2192.78 70.5958V153.497H2291.88L2282.49 185.557H2192.78V402.202C2192.78 436.528 2206.17 453.692 2232.94 453.692C2240.5 453.692 2247.62 452.396 2254.31 449.806C2261.01 447.215 2267.16 442.573 2272.77 435.881L2287.67 456.606C2276.44 470.855 2261.87 481.649 2243.95 488.99C2226.03 496.33 2206.39 500 2185.01 500Z" fill="#1E1E1E"/>
+<path d="M1764.61 500C1731.14 500 1705.56 490.608 1687.86 471.826C1670.15 452.828 1661.3 424.978 1661.3 388.277V188.795L1613.38 175.842V153.497H1760.4V366.256C1760.4 395.617 1765.69 415.479 1776.26 425.842C1786.84 435.988 1802.28 441.062 1822.57 441.062C1835.96 441.062 1848.69 437.392 1860.78 430.051C1873.09 422.495 1882.59 410.945 1889.28 395.401V441.062C1874.6 458.333 1856.25 472.474 1834.23 483.484C1812.21 494.494 1789 500 1764.61 500ZM1875.03 500V452.396L1871.79 448.51V188.795L1826.78 175.842V153.497H1971.21V435.88L2019.79 453.691V468.264L1889.28 500H1875.03Z" fill="#1E1E1E"/>
+<path d="M1402.47 493.199V470.531L1447.48 457.901V282.383C1447.48 256.045 1442.19 236.615 1431.61 224.093C1421.04 211.356 1405.17 204.987 1384.01 204.987C1357.24 204.987 1335.87 216.429 1319.89 239.313V198.834C1335.22 183.29 1353.25 170.768 1373.97 161.269C1394.91 151.77 1418.23 147.021 1443.92 147.021C1512.57 147.021 1546.9 184.585 1546.9 259.715V457.901L1595.15 470.531V493.199H1402.47ZM1180.32 493.199V470.531L1228.57 457.901V211.14L1179.67 193.005V178.432L1310.5 147.021H1324.75V201.748L1327.34 204.987V457.901L1372.68 470.531V493.199H1180.32Z" fill="#1E1E1E"/>
+<path d="M896.575 500C870.453 500 849.835 493.199 834.723 479.598C819.611 465.997 812.055 447.431 812.055 423.899C812.055 402.526 818.747 384.067 832.132 368.523C845.518 352.979 866.027 340.026 893.661 329.663C921.511 319.084 956.917 310.773 999.879 304.728V257.772C999.879 228.843 997.18 209.413 991.783 199.482C986.601 189.551 976.239 184.585 960.695 184.585C944.719 184.585 932.089 188.471 922.806 196.243C913.523 203.799 908.881 214.27 908.881 227.655C908.881 232.405 909.313 237.262 910.176 242.228C911.04 246.977 911.472 251.619 911.472 256.153C911.472 268.458 907.154 278.713 898.518 286.917C890.099 294.905 879.628 298.899 867.106 298.899C854.585 298.899 844.438 294.905 836.666 286.917C828.894 278.713 825.008 268.134 825.008 255.181C825.008 241.796 829.434 228.411 838.285 215.026C847.137 201.641 859.55 189.659 875.526 179.08C909.205 157.707 949.684 147.021 996.964 147.021C1020.06 147.021 1038.63 149.827 1052.66 155.44C1066.91 160.837 1077.6 168.717 1084.72 179.08C1089.69 187.068 1093.36 197.431 1095.73 210.168C1098.11 222.906 1099.3 241.148 1099.3 264.896V397.02C1099.3 416.019 1101.13 429.836 1104.8 438.471C1108.47 446.891 1114.62 451.101 1123.26 451.101C1132.97 451.101 1142.58 446.027 1152.08 435.881L1166.65 456.606C1152.84 471.286 1138.37 482.189 1123.26 489.313C1108.15 496.438 1091.42 500 1073.07 500C1052.12 500 1036.26 495.79 1025.46 487.37C1014.67 478.951 1007.65 466.213 1004.41 449.158H1001.82C985.846 466.429 969.222 479.274 951.951 487.694C934.68 495.898 916.221 500 896.575 500ZM955.513 439.119C964.365 439.119 972.568 437.608 980.125 434.585C987.681 431.563 994.265 427.029 999.879 420.984V334.844C979.153 338.946 962.853 343.588 950.98 348.769C939.322 353.951 931.118 360.427 926.368 368.199C921.619 375.755 919.244 385.578 919.244 397.668C919.244 411.701 922.158 422.172 927.987 429.08C933.816 435.773 942.992 439.119 955.513 439.119Z" fill="#1E1E1E"/>
+<path d="M599.842 500C564.436 500 533.456 492.875 506.901 478.627C480.563 464.162 460.053 444.084 445.373 418.394C430.908 392.487 423.676 362.586 423.676 328.691C423.676 292.638 431.772 261.01 447.963 233.808C464.155 206.606 486.608 185.341 515.321 170.013C544.25 154.685 577.713 147.021 615.709 147.021C664.716 147.021 701.957 160.298 727.432 186.852C753.123 213.191 766.724 252.051 768.235 303.432L763.378 307.642H483.585V278.497L662.018 272.021C663.745 267.487 664.608 259.391 664.608 247.733C664.608 202.396 645.61 179.728 607.614 179.728C582.786 179.728 563.68 190.522 550.295 212.111C537.126 233.7 530.541 264.356 530.541 304.08C530.541 390.436 563.896 433.614 630.606 433.614C676.806 433.614 713.184 417.854 739.738 386.334L757.549 401.554C746.107 432.642 726.461 456.822 698.611 474.093C670.977 491.364 638.054 500 599.842 500Z" fill="#1E1E1E"/>
+<path d="M0 493.199V469.56L54.728 455.311V36.9171L0 23.3161V0H213.731C252.159 0 285.406 5.93697 313.471 17.8109C341.537 29.6848 363.234 46.5242 378.562 68.329C393.89 89.918 401.554 115.717 401.554 145.725C401.554 191.062 384.283 226.144 349.741 250.972C315.199 275.799 266.3 288.212 203.044 288.212H164.832V455.311L244.819 469.56V493.199H0ZM164.832 253.562H169.365C189.227 253.562 206.174 251.403 220.207 247.086C234.24 242.768 246.114 236.183 255.829 227.332C265.976 217.832 273.316 206.174 277.85 192.358C282.383 178.325 284.65 160.946 284.65 140.22C284.65 120.574 282.599 103.843 278.497 90.0259C274.396 76.209 268.351 65.3066 260.363 57.3187C245.25 42.2064 218.696 34.6503 180.699 34.6503H164.832V253.562Z" fill="#1E1E1E"/>
+</g>
+<defs>
+<clipPath id="pb-word-clip0_2591_224">
+<rect width="4426" height="500" fill="white"/>
+</clipPath>
+</defs></symbol>
+<symbol id="pb-word-rev" viewBox="0 0 4426 500"><g clip-path="url(#pb-word-rev-clip0_2591_224)">
+<path d="M4129.61 493.199V470.531L4177.86 457.902V211.14L4128.96 193.005V177.785L4260.12 147.021H4274.04V205.635L4276.63 208.549V457.902L4360.83 470.531V493.199H4129.61ZM4269.51 252.267L4270.48 208.549C4287.54 188.471 4304.38 173.143 4321 162.565C4337.84 151.77 4354.14 146.373 4369.9 146.373C4385.87 146.373 4399.15 150.907 4409.73 159.974C4420.31 169.041 4425.6 180.268 4425.6 193.653C4425.6 206.606 4421.71 217.509 4413.94 226.36C4406.38 234.996 4396.99 239.313 4385.77 239.313C4374.54 239.313 4363.96 235.32 4354.03 227.332C4347.77 221.934 4342.16 218.048 4337.19 215.674C4332.44 213.083 4327.37 211.788 4321.97 211.788C4314.41 211.788 4305.35 215.889 4294.77 224.093C4284.41 232.081 4275.99 241.472 4269.51 252.267Z" fill="#F5F5F5"/>
+<path d="M3924.2 500C3888.8 500 3857.81 492.875 3831.26 478.627C3804.92 464.162 3784.41 444.084 3769.73 418.394C3755.27 392.487 3748.04 362.586 3748.04 328.691C3748.04 292.638 3756.13 261.01 3772.32 233.808C3788.51 206.606 3810.97 185.341 3839.68 170.013C3868.61 154.685 3902.07 147.021 3940.07 147.021C3989.08 147.021 4026.32 160.298 4051.79 186.852C4077.48 213.191 4091.08 252.051 4092.59 303.432L4087.74 307.642H3807.94V278.497L3986.38 272.021C3988.1 267.487 3988.97 259.391 3988.97 247.733C3988.97 202.396 3969.97 179.728 3931.97 179.728C3907.15 179.728 3888.04 190.522 3874.65 212.111C3861.49 233.7 3854.9 264.356 3854.9 304.08C3854.9 390.436 3888.26 433.614 3954.97 433.614C4001.17 433.614 4037.54 417.854 4064.1 386.334L4081.91 401.554C4070.47 432.642 4050.82 456.822 4022.97 474.093C3995.34 491.364 3962.41 500 3924.2 500Z" fill="#F5F5F5"/>
+<path d="M3616.34 500C3583.09 500 3559.45 492.768 3545.42 478.303C3531.38 463.838 3524.37 440.63 3524.37 408.679V185.557H3479.03L3475.14 165.803L3604.35 67.3574L3624.11 70.5958V153.497H3723.2L3713.81 185.557H3624.11V402.202C3624.11 436.528 3637.49 453.692 3664.26 453.692C3671.82 453.692 3678.94 452.396 3685.64 449.806C3692.33 447.215 3698.48 442.573 3704.1 435.881L3718.99 456.606C3707.77 470.855 3693.19 481.649 3675.27 488.99C3657.36 496.33 3637.71 500 3616.34 500Z" fill="#F5F5F5"/>
+<path d="M3355.75 500C3322.51 500 3298.87 492.768 3284.83 478.303C3270.8 463.838 3263.79 440.63 3263.79 408.679V185.557H3218.45L3214.56 165.803L3343.77 67.3574L3363.53 70.5958V153.497H3462.62L3453.23 185.557H3363.53V402.202C3363.53 436.528 3376.91 453.692 3403.68 453.692C3411.24 453.692 3418.36 452.396 3425.05 449.806C3431.75 447.215 3437.9 442.573 3443.51 435.881L3458.41 456.606C3447.18 470.855 3432.61 481.649 3414.69 488.99C3396.77 496.33 3377.13 500 3355.75 500Z" fill="#F5F5F5"/>
+<path d="M2935.34 500C2901.88 500 2876.3 490.608 2858.6 471.826C2840.89 452.828 2832.04 424.978 2832.04 388.277V188.795L2784.11 175.842V153.497H2931.13V366.256C2931.13 395.617 2936.42 415.479 2947 425.842C2957.58 435.988 2973.02 441.062 2993.31 441.062C3006.7 441.062 3019.43 437.392 3031.52 430.051C3043.83 422.495 3053.33 410.945 3060.02 395.401V441.062C3045.34 458.333 3026.99 472.474 3004.97 483.484C2982.95 494.494 2959.74 500 2935.34 500ZM3045.77 500V452.396L3042.53 448.51V188.795L2997.52 175.842V153.497H3141.95V435.88L3190.53 453.691V468.264L3060.02 500H3045.77Z" fill="#F5F5F5"/>
+<path d="M2320.6 493.199V469.56L2375.33 455.311V36.9171L2320.6 23.3161V0H2536.6C2568.98 0 2595.86 2.1589 2617.23 6.47671C2638.82 10.5786 2656.85 17.0553 2671.31 25.9067C2687.94 36.4853 2700.78 49.9784 2709.85 66.386C2719.13 82.7936 2723.78 100.497 2723.78 119.495C2723.78 145.402 2713.41 167.422 2692.69 185.557C2671.96 203.476 2642.6 215.782 2604.6 222.474V225.065C2633.32 227.871 2658.47 235.427 2680.06 247.733C2701.65 260.039 2718.38 276.015 2730.25 295.661C2742.34 315.091 2748.39 337.327 2748.39 362.37C2748.39 382.016 2744.07 400.367 2735.43 417.422C2727.01 434.478 2715.46 448.51 2700.78 459.521C2684.38 471.611 2664.51 480.246 2641.2 485.427C2617.88 490.609 2586.9 493.199 2548.26 493.199H2320.6ZM2534.66 459.197C2566.39 459.197 2589.82 450.993 2604.93 434.586C2620.26 417.962 2627.92 392.055 2627.92 356.865C2627.92 319.301 2618.21 291.775 2598.78 274.288C2579.35 256.585 2549.34 247.733 2508.75 247.733H2485.43V420.984C2485.43 436.097 2488.89 446.244 2495.8 451.425C2502.92 456.606 2515.87 459.197 2534.66 459.197ZM2485.43 213.083H2492.56C2500.11 213.083 2506.59 212.975 2511.99 212.759C2517.6 212.327 2522.46 211.788 2526.56 211.14C2552.25 208.549 2572 199.698 2585.82 184.586C2599.64 169.257 2606.55 148.424 2606.55 122.086C2606.55 106.973 2604.17 93.9119 2599.42 82.9016C2594.89 71.8912 2588.3 62.9318 2579.67 56.0234C2570.39 48.4672 2558.84 43.0699 2545.02 39.8316C2531.2 36.3774 2515.23 34.6503 2497.09 34.6503H2485.43V213.083Z" fill="#F5F5F5"/>
+<path d="M2185.01 500C2151.77 500 2128.13 492.768 2114.09 478.303C2100.06 463.838 2093.04 440.63 2093.04 408.679V185.557H2047.71L2043.82 165.803L2173.03 67.3574L2192.78 70.5958V153.497H2291.88L2282.49 185.557H2192.78V402.202C2192.78 436.528 2206.17 453.692 2232.94 453.692C2240.5 453.692 2247.62 452.396 2254.31 449.806C2261.01 447.215 2267.16 442.573 2272.77 435.881L2287.67 456.606C2276.44 470.855 2261.87 481.649 2243.95 488.99C2226.03 496.33 2206.39 500 2185.01 500Z" fill="#F5F5F5"/>
+<path d="M1764.61 500C1731.14 500 1705.56 490.608 1687.86 471.826C1670.15 452.828 1661.3 424.978 1661.3 388.277V188.795L1613.38 175.842V153.497H1760.4V366.256C1760.4 395.617 1765.69 415.479 1776.26 425.842C1786.84 435.988 1802.28 441.062 1822.57 441.062C1835.96 441.062 1848.69 437.392 1860.78 430.051C1873.09 422.495 1882.59 410.945 1889.28 395.401V441.062C1874.6 458.333 1856.25 472.474 1834.23 483.484C1812.21 494.494 1789 500 1764.61 500ZM1875.03 500V452.396L1871.79 448.51V188.795L1826.78 175.842V153.497H1971.21V435.88L2019.79 453.691V468.264L1889.28 500H1875.03Z" fill="#F5F5F5"/>
+<path d="M1402.47 493.199V470.531L1447.48 457.901V282.383C1447.48 256.045 1442.19 236.615 1431.61 224.093C1421.04 211.356 1405.17 204.987 1384.01 204.987C1357.24 204.987 1335.87 216.429 1319.89 239.313V198.834C1335.22 183.29 1353.25 170.768 1373.97 161.269C1394.91 151.77 1418.23 147.021 1443.92 147.021C1512.57 147.021 1546.9 184.585 1546.9 259.715V457.901L1595.15 470.531V493.199H1402.47ZM1180.32 493.199V470.531L1228.57 457.901V211.14L1179.67 193.005V178.432L1310.5 147.021H1324.75V201.748L1327.34 204.987V457.901L1372.68 470.531V493.199H1180.32Z" fill="#F5F5F5"/>
+<path d="M896.575 500C870.453 500 849.835 493.199 834.723 479.598C819.611 465.997 812.055 447.431 812.055 423.899C812.055 402.526 818.747 384.067 832.132 368.523C845.518 352.979 866.027 340.026 893.661 329.663C921.511 319.084 956.917 310.773 999.879 304.728V257.772C999.879 228.843 997.18 209.413 991.783 199.482C986.601 189.551 976.239 184.585 960.695 184.585C944.719 184.585 932.089 188.471 922.806 196.243C913.523 203.799 908.881 214.27 908.881 227.655C908.881 232.405 909.313 237.262 910.176 242.228C911.04 246.977 911.472 251.619 911.472 256.153C911.472 268.458 907.154 278.713 898.518 286.917C890.099 294.905 879.628 298.899 867.106 298.899C854.585 298.899 844.438 294.905 836.666 286.917C828.894 278.713 825.008 268.134 825.008 255.181C825.008 241.796 829.434 228.411 838.285 215.026C847.137 201.641 859.55 189.659 875.526 179.08C909.205 157.707 949.684 147.021 996.964 147.021C1020.06 147.021 1038.63 149.827 1052.66 155.44C1066.91 160.837 1077.6 168.717 1084.72 179.08C1089.69 187.068 1093.36 197.431 1095.73 210.168C1098.11 222.906 1099.3 241.148 1099.3 264.896V397.02C1099.3 416.019 1101.13 429.836 1104.8 438.471C1108.47 446.891 1114.62 451.101 1123.26 451.101C1132.97 451.101 1142.58 446.027 1152.08 435.881L1166.65 456.606C1152.84 471.286 1138.37 482.189 1123.26 489.313C1108.15 496.438 1091.42 500 1073.07 500C1052.12 500 1036.26 495.79 1025.46 487.37C1014.67 478.951 1007.65 466.213 1004.41 449.158H1001.82C985.846 466.429 969.222 479.274 951.951 487.694C934.68 495.898 916.221 500 896.575 500ZM955.513 439.119C964.365 439.119 972.568 437.608 980.125 434.585C987.681 431.563 994.265 427.029 999.879 420.984V334.844C979.153 338.946 962.853 343.588 950.98 348.769C939.322 353.951 931.118 360.427 926.368 368.199C921.619 375.755 919.244 385.578 919.244 397.668C919.244 411.701 922.158 422.172 927.987 429.08C933.816 435.773 942.992 439.119 955.513 439.119Z" fill="#F5F5F5"/>
+<path d="M599.842 500C564.436 500 533.456 492.875 506.901 478.627C480.563 464.162 460.053 444.084 445.373 418.394C430.908 392.487 423.676 362.586 423.676 328.691C423.676 292.638 431.772 261.01 447.963 233.808C464.155 206.606 486.608 185.341 515.321 170.013C544.25 154.685 577.713 147.021 615.709 147.021C664.716 147.021 701.957 160.298 727.432 186.852C753.123 213.191 766.724 252.051 768.235 303.432L763.378 307.642H483.585V278.497L662.018 272.021C663.745 267.487 664.608 259.391 664.608 247.733C664.608 202.396 645.61 179.728 607.614 179.728C582.786 179.728 563.68 190.522 550.295 212.111C537.126 233.7 530.541 264.356 530.541 304.08C530.541 390.436 563.896 433.614 630.606 433.614C676.806 433.614 713.184 417.854 739.738 386.334L757.549 401.554C746.107 432.642 726.461 456.822 698.611 474.093C670.977 491.364 638.054 500 599.842 500Z" fill="#F5F5F5"/>
+<path d="M0 493.199V469.56L54.728 455.311V36.9171L0 23.3161V0H213.731C252.159 0 285.406 5.93697 313.471 17.8109C341.537 29.6848 363.234 46.5242 378.562 68.329C393.89 89.918 401.554 115.717 401.554 145.725C401.554 191.062 384.283 226.144 349.741 250.972C315.199 275.799 266.3 288.212 203.044 288.212H164.832V455.311L244.819 469.56V493.199H0ZM164.832 253.562H169.365C189.227 253.562 206.174 251.403 220.207 247.086C234.24 242.768 246.114 236.183 255.829 227.332C265.976 217.832 273.316 206.174 277.85 192.358C282.383 178.325 284.65 160.946 284.65 140.22C284.65 120.574 282.599 103.843 278.497 90.0259C274.396 76.209 268.351 65.3066 260.363 57.3187C245.25 42.2064 218.696 34.6503 180.699 34.6503H164.832V253.562Z" fill="#F5F5F5"/>
+</g>
+<defs>
+<clipPath id="pb-word-rev-clip0_2591_224">
+<rect width="4426" height="500" fill="white"/>
+</clipPath>
+</defs></symbol>
+<symbol id="pb-mark" viewBox="0 0 1000 1000"><g clip-path="url(#pb-mark-clip0_2591_185)">
+<g clip-path="url(#pb-mark-clip1_2591_185)">
+<path d="M917.012 82.986C1027.66 193.634 1027.66 373.03 917.012 483.678C860.758 539.932 816.281 556.099 774.525 568.744C731.52 581.769 686.12 592.008 639.065 639.062C592.009 686.117 581.771 731.517 568.745 774.529C556.1 816.278 539.932 860.762 483.679 917.016C373.031 1027.66 193.634 1027.66 82.9854 917.016C-27.6623 806.366 -27.6618 626.97 82.9868 516.321C139.24 460.068 183.722 443.901 225.474 431.255C268.482 418.23 313.882 407.991 360.936 360.937C407.992 313.882 418.23 268.482 431.256 225.474C443.901 183.722 460.068 139.24 516.321 82.9867C626.97 -27.6621 806.368 -27.6621 917.012 82.986Z" fill="#1E1E1E"/>
+<path d="M542.838 109.503C638.842 13.4987 794.496 13.4996 890.495 109.502L890.496 109.503C914.536 133.543 927.488 156.193 933.397 177.134C939.27 197.942 938.846 219.37 932.589 242.149C919.635 289.312 882.184 340.475 827.996 394.661C777.553 445.103 739.334 458.792 701.156 470.354L701.154 470.354C659.614 482.936 604.799 495.296 550.049 550.045H550.048C495.296 604.796 482.937 659.611 470.354 701.158C458.793 739.331 445.104 777.557 394.663 827.999C340.476 882.183 289.314 919.633 242.15 932.588C219.37 938.845 197.941 939.269 177.132 933.397C156.518 927.581 134.248 914.941 110.627 891.618L109.501 890.499C13.4986 794.493 13.4997 638.841 109.503 542.838C158.368 493.973 195.767 479.598 232.765 468.236L236.344 467.146C277.887 454.564 332.703 442.204 387.453 387.453C442.204 332.702 454.564 277.887 467.146 236.344C478.707 198.168 492.397 159.944 542.838 109.503Z" fill="#F5F5F5" stroke="#1E1E1E" stroke-width="75"/>
+<path d="M556.256 350.474C568.901 308.721 585.069 264.239 641.322 207.986" stroke="#1E1E1E" stroke-width="75"/>
+</g>
+</g>
+<defs>
+<clipPath id="pb-mark-clip0_2591_185">
+<rect width="1000" height="1000" fill="white"/>
+</clipPath>
+<clipPath id="pb-mark-clip1_2591_185">
+<rect width="1000" height="1000" fill="white"/>
+</clipPath>
+</defs></symbol>
+<symbol id="pb-mark-rev" viewBox="0 0 1000 1000"><g clip-path="url(#pb-mark-rev-clip0_2591_185)">
+<g clip-path="url(#pb-mark-rev-clip1_2591_185)">
+<path d="M917.012 82.986C1027.66 193.634 1027.66 373.03 917.012 483.678C860.758 539.932 816.281 556.099 774.525 568.744C731.52 581.769 686.12 592.008 639.065 639.062C592.009 686.117 581.771 731.517 568.745 774.529C556.1 816.278 539.932 860.762 483.679 917.016C373.031 1027.66 193.634 1027.66 82.9854 917.016C-27.6623 806.366 -27.6618 626.97 82.9868 516.321C139.24 460.068 183.722 443.901 225.474 431.255C268.482 418.23 313.882 407.991 360.936 360.937C407.992 313.882 418.23 268.482 431.256 225.474C443.901 183.722 460.068 139.24 516.321 82.9867C626.97 -27.6621 806.368 -27.6621 917.012 82.986Z" fill="#F5F5F5"/>
+<path d="M542.838 109.503C638.842 13.4987 794.496 13.4996 890.495 109.502L890.496 109.503C914.536 133.543 927.488 156.193 933.397 177.134C939.27 197.942 938.846 219.37 932.589 242.149C919.635 289.312 882.184 340.475 827.996 394.661C777.553 445.103 739.334 458.792 701.156 470.354L701.154 470.354C659.614 482.936 604.799 495.296 550.049 550.045H550.048C495.296 604.796 482.937 659.611 470.354 701.158C458.793 739.331 445.104 777.557 394.663 827.999C340.476 882.183 289.314 919.633 242.15 932.588C219.37 938.845 197.941 939.269 177.132 933.397C156.518 927.581 134.248 914.941 110.627 891.618L109.501 890.499C13.4986 794.493 13.4997 638.841 109.503 542.838C158.368 493.973 195.767 479.598 232.765 468.236L236.344 467.146C277.887 454.564 332.703 442.204 387.453 387.453C442.204 332.702 454.564 277.887 467.146 236.344C478.707 198.168 492.397 159.944 542.838 109.503Z" fill="#1E1E1E" stroke="#F5F5F5" stroke-width="75"/>
+<path d="M556.256 350.474C568.901 308.721 585.069 264.239 641.322 207.986" stroke="#F5F5F5" stroke-width="75"/>
+</g>
+</g>
+<defs>
+<clipPath id="pb-mark-rev-clip0_2591_185">
+<rect width="1000" height="1000" fill="white"/>
+</clipPath>
+<clipPath id="pb-mark-rev-clip1_2591_185">
+<rect width="1000" height="1000" fill="white"/>
+</clipPath>
+</defs></symbol>
+</defs></svg>
 
 <div class="deck" id="deck">
 
-  <!-- 01 -->
-  <section class="slide">
-    <div class="stage">
-      <div class="top">
-        <div class="eyebrow">PeanutButter &amp; More</div>
-        <div class="folio">01 / 06</div>
+<!-- ========================= 01 · THE WORK ========================= -->
+<section class="slide" data-title="The work">
+ <div class="stage">
+  <header class="top"><span class="eyebrow">The work</span><span class="folio">01 / 07</span></header>
+  <div class="body">
+    <svg class="wordmark" viewBox="0 0 4426 500" role="img" aria-label="PeanutButter"><use href="#pb-word"/></svg>
+    <h1>An invoice arrives. It has to be checked, matched, coded, approved, paid, and recorded.</h1>
+    <ul class="anchors">
+      <li>Vendor invoices, any channel</li>
+      <li>Vendor identity, payment details</li>
+      <li>Recurring bills</li>
+      <li>Contractor payments</li>
+      <li>Payment on terms</li>
+      <li>The entry on their books</li>
+    </ul>
+  </div>
+  <footer class="foot"><svg class="mark" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#pb-mark"/></svg></footer>
+ </div>
+ <aside class="notes"><div class="notes-inner">
+   <div class="notes-head"><span>01 &middot; The work</span><span>Speaker notes</span></div>
+
+   <h4>Open one step back</h4>
+   <p class="say">Every business pays invoices. Every month. Forever.</p>
+   <p>Say that first and let it sit. It is simply true, it costs nothing to agree with, and it puts the room in the right frame before a single word about the company.</p>
+
+   <h4>Then the sentence on the slide</h4>
+   <p class="say">An invoice arrives. It has to be checked, matched, coded, approved, paid, and recorded.</p>
+   <p>The invoice is the subject of that sentence, not a person. That is deliberate. The work is a property of the transaction, not of whoever happens to be doing it. Do not rewrite it as &ldquo;somebody has to handle it&rdquo; &mdash; the whole argument later depends on the work existing independently of the person.</p>
+   <p class="say">That's the work. We do it &mdash; not software a business operates, the work itself, done and answered for.</p>
+   <p>&ldquo;Done and answered for&rdquo; is the phrase to land. It is the difference between a tool and a provider, and it is what makes the controls slide matter later.</p>
+
+   <h4>Never open with the category</h4>
+   <p>Do not say &ldquo;we do financial operations.&rdquo; In a real meeting a banker heard that as finance &mdash; investments, factoring, treasury &mdash; and the rest of the conversation was spent climbing back. Name the transaction, not the category. Do not open with AI either; that comes on slide two, as the reason this is possible now.</p>
+
+   <h4>The scope, in full</h4>
+   <ul>
+     <li><b>Vendor invoices, any channel.</b> Checked against purchase orders, receiving records, contracts, or that vendor's history &mdash; whatever evidence exists for that business.</li>
+     <li><b>Vendor identity and payment details.</b> Maintained and verified, with a hard gate on any change to where money goes. This is the single most common fraud vector in payables and it is worth pausing on if anyone in the room reacts to it.</li>
+     <li><b>Recurring bills and subscriptions.</b></li>
+     <li><b>Contractor payments</b>, with tax documentation collected for those we onboard.</li>
+     <li><b>Payment on terms</b>, including early-payment discounts. Cash-priority decisions escalate to the owner &mdash; we do not decide who gets paid when money is tight.</li>
+     <li><b>The entry on their books.</b> Close and statements stay with their accountant.</li>
+   </ul>
+
+   <h4>The boundary, said as a decision</h4>
+   <p class="say">Procurement, payroll, tax filing and treasury are deliberately out of scope. That is a decision, not a gap.</p>
+   <p>Treasury being out of scope is the line that matters in this room. We operate the layer above the treasury stack a bank provides. A customer of ours moves more volume through their bank, not less.</p>
+
+   <h4>Language discipline</h4>
+   <p>A vendor sends an <b>invoice</b> &mdash; the document. A business owes a <b>payable</b>. <b>Bills</b> are the internal list of what's due. Never mix the three in one sentence; it reads as someone who has not done the work.</p>
+ </div></aside>
+</section>
+
+<!-- ========================= 02 · WHY NOW ========================= -->
+<section class="slide" data-title="Why now, and how big">
+ <div class="stage">
+  <header class="top"><span class="eyebrow">Why now</span><span class="folio">02 / 07</span></header>
+  <div class="body">
+    <h1>The technology is here. The labor is not.</h1>
+    <div class="figures">
+      <div class="figure">
+        <span class="n">300,000+</span>
+        <span class="d">accountants left, 2019&ndash;2022</span>
+        <span class="s">Wall Street Journal</span>
       </div>
-      <div class="body">
-        <div class="two">
-          <div class="stack wide">
-            <h1>Businesses are run by fewer people every year. The finance function is the last one still done by hand.</h1>
-            <div class="node-rule" aria-hidden="true"><div class="h short"></div><div class="node"></div><div class="h"></div></div>
-          </div>
-          <div class="stack">
-            <p>The United States has been losing accountants faster than it replaces them. The direction has held for years and nothing in the pipeline reverses it.</p>
-            <p>A business without a finance department feels it first. Invoices sit. Work orders queue. The month closes late, and someone senior spends their evening in a spreadsheet reconstructing what the business already did.</p>
-            <p>This is an operations problem before it is a technology problem.</p>
-          </div>
-        </div>
+      <div class="figure">
+        <span class="n">$82B</span>
+        <span class="d">US clerk wages, yearly</span>
+        <span class="s">Computed from BLS medians</span>
       </div>
-      <div class="foot">
-        <span>J.P. Morgan · Innovation Economy Group</span>
-        <span>September 2026</span>
+      <div class="figure">
+        <span class="n">$220B</span>
+        <span class="d">US outsourced accounting</span>
+        <span class="s">Census Bureau, QSS</span>
       </div>
     </div>
-  </section>
+  </div>
+  <footer class="foot"><svg class="mark" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#pb-mark"/></svg></footer>
+ </div>
+ <aside class="notes"><div class="notes-inner">
+   <div class="notes-head"><span>02 &middot; Why now, and how big</span><span>Speaker notes</span></div>
 
-  <!-- 02 -->
-  <section class="slide">
-    <div class="stage">
-      <div class="top">
-        <div class="eyebrow">The spine</div>
-        <div class="folio">02 / 06</div>
-      </div>
-      <div class="body">
-        <div class="two tight">
-          <div class="stack wide">
-            <h2>Two decisions of different natures.</h2>
-            <div class="pull">
-              <p class="lede">Judgment stays human. Execution becomes machine, inside limits it cannot exceed.</p>
-            </div>
-          </div>
-          <div class="stack">
-            <p>There are three ways to fund a business: equity, debt, and revenue from operations. Which one to take is judgment. It depends on the owner, the moment, and what the business is for — and it is not a call a machine can make, or should be asked to.</p>
-            <p>Once the call is made, everything after it is execution. Getting the money. Moving it. Putting it to work. Proving where it went. Building software used to be that kind of work too, and it stopped being done by hand.</p>
-            <p>Where those two meet is the company. We built ourselves that way before we sold it to anyone.</p>
-          </div>
-        </div>
-      </div>
-      <div class="foot">
-        <span>Judgment · Execution</span>
-        <span>PeanutButter &amp; More</span>
-      </div>
+   <h4>Lead with capability, not with AI as a topic</h4>
+   <p>AI can now do this work end to end rather than assist someone doing it: read any invoice format, match it against whatever evidence exists, code it, route it, pay it, record it. That is new, and it is why this company exists now rather than three years ago.</p>
+
+   <h4>The second force, which the technology happens to answer</h4>
+   <ul>
+     <li>Over <b>300,000 accountants</b> left the profession between 2019 and 2022.<cite>Wall Street Journal</cite></li>
+     <li>Accounting degree completions hit a 20-year low of <b>55,152</b> in 2023&ndash;24.<cite>AICPA Trends Report</cite></li>
+     <li>CPA exam candidates are down <b>more than 30%</b> since 2016.<cite><span class="ph">[source to name before this is shown]</span></cite></li>
+     <li>Roughly <b>75%</b> of AICPA members reached retirement eligibility by 2020.<cite><span class="ph">[source to name before this is shown]</span></cite></li>
+     <li>More than <b>90%</b> of finance leaders report difficulty finding qualified accounting staff.<cite><span class="ph">[source to name before this is shown]</span></cite></li>
+   </ul>
+   <p class="say">The wage line does not disappear. Every business still has to pay its invoices. What changes is who gets paid to do the work.</p>
+
+   <h4>TAM &mdash; what US businesses already pay to have this work done</h4>
+   <p><b>In-house.</b> 1,613,400 bookkeeping, accounting and auditing clerks at a median of $50,670 is approximately <b>$82B a year in wages</b>. Say plainly that this is computed from two BLS figures, not a published BLS total &mdash; if you are asked, you want to have said it first.<cite>US Bureau of Labor Statistics, Occupational Outlook Handbook</cite></p>
+   <p>BLS projects clerk employment down 6% through 2035 while still generating roughly 144,100 openings a year. The work isn't going away; the labor is.<cite>US Bureau of Labor Statistics</cite></p>
+   <p><b>Outsourced.</b> US firms in NAICS 5412 &mdash; accounting, tax preparation, bookkeeping and payroll services &mdash; reported $54.8B, $54.1B, $55.4B and $55.7B across the four quarters from Q4 2024 through Q3 2025, or approximately <b>$220B annualized</b>.<cite>US Census Bureau, Quarterly Services Survey, establishments subject to federal income tax; FRED series REV5412TAXABL144QSA</cite></p>
+   <p>Every figure on this slide is United States only. Never put a US figure beside a global one.</p>
+
+   <h4>SAM &mdash; show the carve-out, don't assert a number</h4>
+   <p>Much of the $220B is tax preparation, payroll and audit or assurance, all explicitly out of scope. The same applies to the share of the wage line spent on close, statements and filings. Strip those, strip the enterprise accounts we don't serve, and what remains is the transactional payables-and-bookkeeping share of both lines.</p>
+   <p>$220B &times; <span class="ph">[% of NAICS 5412 revenue attributable to bookkeeping and transactional accounting]</span> &nbsp;+&nbsp; $82B &times; <span class="ph">[% of clerk wage line attributable to payables work]</span> &nbsp;&minus;&nbsp; <span class="ph">[enterprise accounts not served]</span> &nbsp;=&nbsp; <span class="ph">[SAM]</span></p>
+   <p>Put the assumptions on the table by name so a banker argues with the assumptions rather than the conclusion. A defensible method beats a confident number.</p>
+
+   <h4>SOM &mdash; bounded by execution, not by demand</h4>
+   <p>This framing is the point. Do not replace it with a market-share percentage. Year one is a capacity question: how many businesses we can reach.</p>
+
+   <h4>Go to market, in order of priority</h4>
+   <ul>
+     <li><b>Hiring-moment interception (year one).</b> BLS records roughly 144,100 openings a year for bookkeeping, accounting and auditing clerks, plus a share of the 115,300 accountant openings that are bookkeeping-shaped in practice. Each posting is a business that has already decided to spend, published the price in the posting, and named the decision-maker. The cleanest B2B buying signal that exists, refreshing daily.<cite>US Bureau of Labor Statistics</cite></li>
+     <li><b>Paid digital and search (year two).</b> Outsourcing-intent buyers convert well but are contested: established firms and large platform budgets bid the same keywords. Language-model optimization is an early bet, not a plan we rely on.</li>
+     <li><b>Accounting firms as customers (the compounding channel).</b> Firms have demand they cannot serve because they cannot hire &mdash; the same shortage from earlier in this slide. They already buy outsourced labor. One firm with <span class="ph">[40]</span> clients is <span class="ph">[40]</span> deployments through one trust relationship, and the firm keeps its clients, its judgment work and its advisory fees. The only channel where acquisition compounds rather than repeats.</li>
+   </ul>
+
+   <h4>The year-one funnel &mdash; every figure bracketed</h4>
+   <p><span class="ph">[30,000]</span> contacts worked in year one, a capacity number rather than a market number, ramping as sending domains warm &nbsp;&middot;&nbsp; <span class="ph">[5%]</span> reply &nbsp;&middot;&nbsp; <span class="ph">[15%]</span> reply-to-trial &nbsp;&middot;&nbsp; <span class="ph">[50%]</span> trial-to-paid, our own committed threshold &nbsp;&middot;&nbsp; approximately <span class="ph">[112]</span> customers at <span class="ph">[$24K]</span> &nbsp;&middot;&nbsp; approximately <span class="ph">[$2.7M]</span> of annual recurring revenue.</p>
+   <p>Priced meaningfully below a clerk's fully-loaded cost of roughly <span class="ph">[$63&ndash;71K]</span>, computed from the BLS median plus standard employer burden &mdash; again, computed, not published.</p>
+   <p>That revenue is under one-hundredth of one percent of the serviceable market. In year one the constraint is how many businesses we can reach, not how many need this.</p>
+
+   <h4>Close the slide on this</h4>
+   <p class="say">They're not choosing between us and software. They're choosing between us and a hire they can't make.</p>
+ </div></aside>
+</section>
+
+<!-- ========================= 03 · THE INCUMBENTS ========================= -->
+<section class="slide dark" data-title="Why the incumbents won't">
+ <div class="stage">
+  <header class="top"><span class="eyebrow">The incumbents</span><span class="folio">03 / 07</span></header>
+  <div class="body">
+    <h1>This revenue is not theirs to take.</h1>
+    <ol class="lines">
+      <li>They sell software someone operates.</li>
+      <li>Their buyer is a finance team.</li>
+      <li>Interchange is the revenue, not fees.</li>
+      <li>Penetration is early.</li>
+    </ol>
+  </div>
+  <footer class="foot"><svg class="mark" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#pb-mark-rev"/></svg></footer>
+ </div>
+ <aside class="notes"><div class="notes-inner">
+   <div class="notes-head"><span>03 &middot; Why we can, and why the incumbents won't</span><span>Speaker notes</span></div>
+
+   <h4>First: accounting firms and independent accountants</h4>
+   <p>Capacity is people, so their revenue scales with headcount they cannot hire. The shortage creating our demand is the same shortage capping their supply.</p>
+   <p>They are not adversaries, and say so out loud. The close, the statements and the filings stay with them, and they get cleaner data than they have ever had. This matters in this room: bankers know accountants, and a pitch that sounds like it is at war with the accounting profession lands badly.</p>
+
+   <h4>Then: take the AP software companies seriously</h4>
+   <p>Ramp launched AI agents for accounts payable in October 2025 &mdash; coding, fraud detection, approval recommendations, card payments &mdash; and extended to bookkeeping in February 2026. BILL, Stampli and Vic.ai have layered agentic features through 2026. Name them before the room does. The argument is structural, not dismissive.</p>
+
+   <h4>1 &mdash; They sell software someone operates</h4>
+   <p>A person connects the accounting system, configures approval flows and permissions, reviews recommendations and clicks approve. Their agents recommend; a human decides. A business without a finance team has nobody to do any of that.</p>
+   <p class="say">We are not a better tool for a finance team. We are what a business buys when it doesn't have one.</p>
+
+   <h4>2 &mdash; Their buyer is a finance team, and most of this market doesn't have one</h4>
+   <p>These products are sold to controllers and finance operations staff at companies sophisticated enough to run them. That is a real and valuable market. It is also a small fraction of the businesses that must pay invoices every month.</p>
+
+   <h4>3 &mdash; Their revenue model argues against it</h4>
+   <p>Ramp's autonomous payment action is card entry, because interchange is the revenue. Doing this work as labor means being paid a fee to complete the work regardless of how money moves &mdash; competing with their own economics rather than extending them.</p>
+   <p>A company priced as software cannot deliberately move labor onto its cost of goods sold. That decision does not clear a board. This is a pricing constraint, not a capability one, and that distinction is the whole point &mdash; do not claim they can't build it.</p>
+
+   <h4>4 &mdash; Penetration is early</h4>
+   <p>However fast agentic features ship, the share of US businesses whose payables actually run this way remains small.</p>
+   <p class="flag"><span class="ph">[Bracket any penetration figure unless a source is shown. If no source exists by the meeting, say &ldquo;early&rdquo; and move on rather than reaching for a number.]</span></p>
+
+   <h4>If asked: aren't you just a services business?</h4>
+   <p>Yes, in revenue shape. That is slide four, and it is an advantage rather than an apology.</p>
+ </div></aside>
+</section>
+
+<!-- ========================= 04 · THE ECONOMICS ========================= -->
+<section class="slide" data-title="The economics">
+ <div class="stage">
+  <header class="top"><span class="eyebrow">The economics</span><span class="folio">04 / 07</span></header>
+  <div class="body">
+    <h2>Services revenue. Software costs.</h2>
+    <div class="chart-wrap">
+      <svg class="chart" viewBox="0 0 100 50" role="img" aria-label="Four business models positioned by revenue per customer and gross margin">
+        <line x1="12" y1="2" x2="12" y2="40" stroke="#1E1E1E" stroke-opacity=".3" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        <line x1="12" y1="40" x2="97" y2="40" stroke="#1E1E1E" stroke-opacity=".3" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        <g font-family="DM Sans, Helvetica, Arial, sans-serif" font-size="1.9" fill="#1E1E1E" fill-opacity=".46" letter-spacing=".13">
+          <text x="8.2" y="21" transform="rotate(-90 8.2 21)" text-anchor="middle">GROSS MARGIN &#8594;</text>
+          <text x="97" y="45.6" text-anchor="end">REVENUE PER CUSTOMER &#8594;</text>
+        </g>
+
+        <circle cx="26" cy="11" r="1.4" fill="none" stroke="#1E1E1E" stroke-opacity=".55" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        <text x="26" y="16.4" text-anchor="middle" font-family="Libre Caslon Text, Georgia, serif" font-size="2.7" fill="#1E1E1E" fill-opacity=".78">SaaS</text>
+
+        <circle cx="64" cy="32" r="1.4" fill="none" stroke="#1E1E1E" stroke-opacity=".55" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        <text x="64" y="37.4" text-anchor="middle" font-family="Libre Caslon Text, Georgia, serif" font-size="2.7" fill="#1E1E1E" fill-opacity=".78">Accounting firm</text>
+
+        <path d="M61.9 8.2 h-1.1 v5.2 h1.1" fill="none" stroke="#7B6649" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        <path d="M66.1 8.2 h1.1 v5.2 h-1.1" fill="none" stroke="#7B6649" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        <circle cx="64" cy="10.8" r="1.3" fill="#7B6649"/>
+        <text x="64" y="18.2" text-anchor="middle" font-family="Libre Caslon Text, Georgia, serif" font-size="2.7" font-weight="700" fill="#7B6649">This company</text>
+
+        <path d="M69.6 9.2 L 83.4 5.2" fill="none" stroke="#7B6649" stroke-opacity=".62" stroke-width="1" stroke-dasharray="1.6 1.4" vector-effect="non-scaling-stroke"/>
+        <path d="M84.6 4.9 L 81.9 4.4 L 82.7 6.2 Z" fill="#7B6649" fill-opacity=".62"/>
+        <text x="85.8" y="4.2" text-anchor="start" font-family="Libre Caslon Text, Georgia, serif" font-size="2.7" fill="#7B6649" fill-opacity=".85">Over time</text>
+      </svg>
+      <p class="src-line">Positions illustrative; ours bracketed and unmeasured.</p>
     </div>
-  </section>
+  </div>
+  <footer class="foot"><svg class="mark" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#pb-mark"/></svg></footer>
+ </div>
+ <aside class="notes"><div class="notes-inner">
+   <div class="notes-head"><span>04 &middot; The economics</span><span>Speaker notes</span></div>
 
-  <!-- 03 -->
-  <section class="slide">
-    <div class="stage">
-      <div class="top">
-        <div class="eyebrow">What we run</div>
-        <div class="folio">03 / 06</div>
-      </div>
-      <div class="body">
-        <div class="two tight">
-          <div class="seq">
-            <h2>Financial operations first. The operation is what earns the credit layer.</h2>
-            <div class="step">
-              <div class="n">01</div>
-              <div>
-                <div class="label">We run the operation</div>
-                <p class="sm">Accounts payable, work orders, procurement — the money movements that keep a business running. Payroll and tax are deliberately out of scope for now. Our customer is any business hiring for accounting or outsourcing it, and they are not choosing between us and software. They are choosing between us and a hire they cannot make.</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="n">02</div>
-              <div>
-                <div class="label">The operation earns the credit layer</div>
-                <p class="sm">Running those operations means holding a business's payables calendar and its cash cycle — what it owes, to whom, when, and whether it can cover it. That makes us the party positioned to originate credit at the moment of need, through banking partners, with use of proceeds already instrumented. The lender watches the money work rather than reconstructing it from statements at quarter end. The money never leaves the rail. The balance sheet is the bank's; we are the layer that makes business credit deployable and observable.</p>
-              </div>
-            </div>
-            <p class="sm">Operating is the depth. Distribution is the aperture. Operating produces distribution, not the reverse, and that order is the whole argument. A bank today is infrastructure for business, and it does not behave like one.</p>
-          </div>
+   <h4>The one line, and what it means</h4>
+   <p class="say">Services revenue. Software costs.</p>
+   <p>Four models, compared on revenue per customer and gross margin. Walk the chart in this order; it takes about ninety seconds.</p>
 
-          <div class="stack">
-            <div class="label">The economics</div>
-            <p class="sm">Software historically captured a small fraction of what a business function costs. The rest was payroll — the people operating the software. Selling the work rather than the tool means invoicing against that larger line.</p>
-            <p class="sm">A services business normally carries services economics: revenue scales with headcount. Ours does not. The work is done by the machine, and people build capability the machine does not yet have — never capacity. Every judgment a human makes is captured, and that class of exception stops needing a person.</p>
-            <p class="sm">Cost per unit of work falls as the system learns while price holds. We instrument cost per unit of work from the first transaction, so gross margin is a measurement rather than an assertion.</p>
-            <div class="pull">
-              <p class="lede accent">A services promise on software economics.</p>
-            </div>
-          </div>
-        </div>
+   <h4>Services revenue with human costs &mdash; the accounting firm</h4>
+   <p>High revenue per customer. Cost of goods sold is salaries. Margin lands where services businesses actually land.</p>
+
+   <h4>Software revenue with software costs &mdash; SaaS</h4>
+   <p>Low revenue per customer relative to the function's total cost, and high margin. This is the model the room knows best.</p>
+
+   <h4>Services revenue with software costs &mdash; this company</h4>
+   <p>The revenue of the first with the cost structure of the second. That is the whole thesis of the business in one position on a chart.</p>
+
+   <h4>The same, over time</h4>
+   <p>Cost per unit of work falls as the system learns, while price holds.</p>
+
+   <h4>Say the limits out loud, before anyone asks</h4>
+   <p>Industry margin ranges are illustrative. Ours is drawn in brackets because we are pre-revenue &mdash; this chart does not report a margin we have measured, and it is not trying to.</p>
+   <p class="say">We instrument cost per unit of work from the first transaction, so this becomes a measurement rather than a claim.</p>
+   <p>That sentence is worth more in this room than any number would be. A banker who hears a pre-revenue company decline to invent a margin will remember it.</p>
+
+   <h4>Then the compounding opportunity &mdash; framed as opportunity, not a moat we hold</h4>
+   <p>Verification done once serves every subsequent customer. Every vendor verified for one business is already verified for the next &mdash; and every vendor we pay is itself a business with invoices to pay.</p>
+   <p>A network that gets more valuable and cheaper to serve with each customer, available only to whoever does the work rather than sells the tool. Say &ldquo;opportunity,&rdquo; not &ldquo;moat.&rdquo; We do not have it yet.</p>
+ </div></aside>
+</section>
+
+<!-- ========================= 05 · WHO BUILT IT ========================= -->
+<section class="slide dark" data-title="Who built it">
+ <div class="stage">
+  <header class="top"><span class="eyebrow">Who built it</span><span class="folio">05 / 07</span></header>
+  <div class="body">
+    <h1>The people who build the controls before the business.</h1>
+    <ul class="anchors two">
+      <li><span class="who">
+        <span class="nm"><span class="ph">[Name]</span></span>
+        <span class="rl">Chief executive officer</span>
+        <span class="bio">15+ years in regulated banking</span>
+      </span></li>
+      <li><span class="who">
+        <span class="nm"><span class="ph">[Name]</span></span>
+        <span class="rl">Chief technology officer</span>
+        <span class="bio">Three-time CTO. Nubank. YC.</span>
+      </span></li>
+    </ul>
+    <p class="anchor-line">Second venture together.</p>
+  </div>
+  <footer class="foot"><svg class="mark" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#pb-mark-rev"/></svg></footer>
+ </div>
+ <aside class="notes"><div class="notes-inner">
+   <div class="notes-head"><span>05 &middot; Who built it</span><span>Speaker notes</span></div>
+
+   <h4>Chief executive officer</h4>
+   <p>15+ years building digital products and experiences inside regulated banking. Former board member of the Dominican Fintech Association, working closely with the Dominican Central Bank on the country's first fintech law.</p>
+   <p>The regulated-banking detail is the one that matters to this audience: it says the controls on the next slide are habit rather than decoration. The central bank work says the same thing at national scale &mdash; someone who has sat on the regulator's side of the table.</p>
+
+   <h4>Chief technology officer</h4>
+   <p>A three-time CTO. Former engineering manager at Nubank. Y Combinator alum.</p>
+   <p>Nubank is the reference point to lean on here: a bank built from nothing at very large scale, in a regulated market.</p>
+
+   <h4>Second venture together</h4>
+   <p>Say it plainly. It is the answer to the founder-risk question before it is asked.</p>
+
+   <h4>Hand off to the next slide</h4>
+   <p class="say">These are the people who build the controls before the business. Which is why the next slide exists.</p>
+   <p>That is the whole purpose of this slide in the deck. It is not a credentials slide, it is the setup for the controls slide &mdash; and for relationship bankers, operational maturity is what they are actually buying.</p>
+ </div></aside>
+</section>
+
+<!-- ========================= 06 · WHAT WE BUILT ========================= -->
+<section class="slide" data-title="What we built">
+ <div class="stage">
+  <header class="top"><span class="eyebrow">What we built</span><span class="folio">06 / 07</span></header>
+  <div class="body">
+    <h1>75 essential controls, all built and proven.</h1>
+    <ul class="words">
+      <li>Identity</li><li>Authority</li><li>Communication</li>
+      <li>Traceability</li><li>Verification</li><li>Accountability</li>
+    </ul>
+    <div class="figures" style="grid-template-columns:1fr 1.8fr">
+      <div class="figure">
+        <span class="n fig-mid">~40</span>
+        <span class="d">attack attempts refused</span>
+        <span class="s">Internal adversarial audit</span>
       </div>
-      <div class="foot">
-        <span>Operate first · Credit follows</span>
-        <span>Pricing and unit figures — [Fausto to fill live]</span>
-      </div>
+      <p class="anchor-line" style="align-self:end;max-width:34ch">Three operating licenses, each unsigned until its preconditions are met.</p>
     </div>
-  </section>
+  </div>
+  <footer class="foot"><svg class="mark" viewBox="0 0 1000 1000" aria-hidden="true"><use href="#pb-mark"/></svg></footer>
+ </div>
+ <aside class="notes"><div class="notes-inner">
+   <div class="notes-head"><span>06 &middot; What we built</span><span>Speaker notes</span></div>
 
-  <!-- 04 -->
-  <section class="slide">
-    <div class="stage">
-      <div class="top">
-        <div class="eyebrow">How it is built</div>
-        <div class="folio">04 / 06</div>
-      </div>
-      <div class="body">
-        <div class="stack" style="gap:1.4cqw">
-          <h2 style="font-size:2.3cqw; max-width:44ch">The part a competitor cannot borrow.</h2>
-          <div class="bands">
-            <div class="band">
-              <div class="label">Method</div>
-              <p>Nine primary sources on AI-native organisational design — read in full, stored in the repository, argued with in writing, and cited as the basis of the design rather than as inspiration. Every architectural decision is a numbered record carrying the options considered, the recommendation, and the specific evidence that would prove it wrong. <span class="mono">44</span> such records to date.</p>
-            </div>
-            <div class="band">
-              <div class="label">Architecture</div>
-              <p>The work is done by identified agents running written procedures over one ledger of facts, inside a boundary they cannot talk their way out of. Append-only event spine, hash chain computed inside the insert transaction. Nightly anchoring of the chain head to write-once storage in a separate account under compliance-mode object lock, and to a public transparency log we do not control — so an outsider can verify our record rather than trust it. Dual-layer enforcement: every rule is a check in the application and a constraint in the database, and a test proves it fails closed. Deterministic orchestration: no model decides routing, authority tier, ceiling or grant scope. Per-run brokered credentials with short lifetimes; raw secrets never enter an agent's context. Fresh-context independent verification, structurally separate from the party that did the work. Runtime egress control and hash-pinned tool definitions. Anything reading untrusted input — invoices, emails, vendor messages — is assumed compromisable, so nothing important depends on the model behaving.</p>
-            </div>
-            <div class="band">
-              <div class="label">Standards</div>
-              <p><span class="mono">37</span> external standards, specifications and regulations tracked with version, date checked and a re-check date, with a build gate that fails when a citation ages out or an uncited one appears. Among them: Model Context Protocol and A2A for agent interoperability; OAuth 2.1 with RFC 8693 token exchange for delegated authority; Sigstore Rekor and in-toto for provenance; OpenTelemetry GenAI conventions; Cedar and OPA for policy; NIST AI RMF; ISO/IEC 42001 with 42006 accreditation; SOC 2 Type II; EU AI Act Article 50 transparency; GDPR; OWASP Agentic Top 10; MITRE ATLAS. Most companies name standards in a table. We store them, version them, and fail the build when one moves.</p>
-            </div>
-            <div class="band">
-              <div class="label">Proof of rigour</div>
-              <p><span class="mono accent">1,014</span> tests execute on every change. <span class="mono">402</span> mutation entries: each safety rule is deleted on a throwaway database and the suite must go red — a rule nobody notices missing was never a rule. <span class="mono">91</span> database migrations. <span class="mono">116</span> open defects on a standing register, each with a named owner. Three independent audits commissioned this month.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="foot">
-        <span>Method · Architecture · Standards · Proof</span>
-        <span>Written down, versioned, enforced by the build</span>
-      </div>
-    </div>
-  </section>
+   <p class="flag"><span class="ph">[Fausto: verify every technical claim on this slide against the current build before this is shown to anyone.]</span></p>
 
-  <!-- 05 -->
-  <section class="slide">
-    <div class="stage">
-      <div class="top">
-        <div class="eyebrow">What exists, and what we have refused</div>
-        <div class="folio">05 / 06</div>
-      </div>
-      <div class="body">
-        <div class="stack wide">
-          <h2 style="max-width:34ch">We just finished building the machine. Three licences are deliberately unsigned.</h2>
-          <div class="figs">
-            <div class="fig"><div class="v">75</div><div class="k">Essential controls</div></div>
-            <div class="fig"><div class="v">70</div><div class="k">Proven by tests that execute</div></div>
-            <div class="fig"><div class="v">3</div><div class="k">Independent audits, this month</div></div>
-            <div class="fig"><div class="v accent">3</div><div class="k">Operating licences unsigned</div></div>
-          </div>
-          <div class="two tight">
-            <div class="stack">
-              <p class="sm">The audits found gaps. Those findings are open and on the record, and the number of proven controls is measured rather than claimed — which means it moves, in both directions, and we would rather show you a number that moves than one that cannot.</p>
-            </div>
-            <div class="stack">
-              <div class="label">Unsigned by the founder</div>
-              <div class="refusals">
-                <div class="refusal"><span class="mark">—</span><span>Money movement. The rail is not connected. We will not connect a rail we can be robbed through.</span></div>
-                <div class="refusal"><span class="mark">—</span><span>Autonomy.</span></div>
-                <div class="refusal"><span class="mark">—</span><span>Unsupervised sending.</span></div>
-              </div>
-              <p class="sm">The refusal is the feature, and it is the same idea as the rest of the company: judgment stays human, execution becomes machine, inside limits it cannot exceed.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="foot">
-        <span>Measured, not asserted</span>
-        <span>Audit findings open on the record</span>
-      </div>
-    </div>
-  </section>
+   <h4>The headline number</h4>
+   <p>75 essential controls. All 75 are built and proven by tests that execute, not by assertion. Verified through adversarial internal audit &mdash; roughly 40 attack attempts against the money path, every one refused.</p>
+   <p><b>Do not claim third-party or independent audit. There has been none.</b> External attestation is the roadmap, not the record. Say that before anyone asks; in this room, volunteering the limit buys more credit than the claim would.</p>
 
-  <!-- 06 -->
-  <section class="slide">
-    <div class="stage">
-      <div class="top">
-        <div class="eyebrow">The team, and the ask</div>
-        <div class="folio">06 / 06</div>
-      </div>
-      <div class="body">
-        <div class="two tight">
-          <div class="stack wide">
-            <div class="wordmark">PeanutButter &amp; More</div>
-            <div class="node-rule" aria-hidden="true"><div class="h short"></div><div class="node"></div><div class="h"></div></div>
-            <p class="sm">Two founders, second venture together.</p>
-            <div class="people" style="grid-template-columns:1fr">
-              <div class="person">
-                <div class="role">Chief executive officer</div>
-                <div class="name">[Name]</div>
-                <p class="sm">15+ years building financial products inside regulated banking.</p>
-              </div>
-              <div class="person">
-                <div class="role">Chief technology officer</div>
-                <div class="name">[Name]</div>
-                <p class="sm">Three-time CTO. Former engineering manager at Nubank. Y Combinator alum.</p>
-              </div>
-            </div>
-          </div>
-          <div class="stack wide">
-            <div class="label">The ask</div>
-            <p class="lede accent">[Fausto to fill live]</p>
-            <div class="node-rule" aria-hidden="true"><div class="h"></div></div>
-            <p class="sm">What we would want from a banking relationship, and what we would bring to one — [Fausto to fill live].</p>
-          </div>
-        </div>
-      </div>
-      <div class="foot">
-        <span>PeanutButter &amp; More</span>
-        <span>J.P. Morgan · Innovation Economy Group</span>
-      </div>
+   <h4>The six areas, one line each</h4>
+   <ul>
+     <li><b>Identity.</b> Every actor, human or AI, is cryptographically distinguishable and cannot claim to be another. Per-actor credentials, no shared keys, signature-based authentication.</li>
+     <li><b>Authority.</b> What each actor may decide is enforced outside the AI itself, with hard ceilings. The system cannot argue its way past a limit, because the limit isn't in the instructions.</li>
+     <li><b>Communication.</b> Work passes between parts of the system as structured, validated data rather than one AI instructing another. Every exchange becomes record.</li>
+     <li><b>Traceability.</b> An append-only ledger, cryptographically hash-chained and anchored outside our own control, so an outsider can verify the record rather than take our word for it.</li>
+     <li><b>Verification.</b> Work is checked by something other than what produced it. The doer never approves itself.</li>
+     <li><b>Accountability.</b> Every action traces to a responsible human, and there is a kill switch.</li>
+   </ul>
+
+   <h4>The architectural ideas, named plainly</h4>
+   <ul>
+     <li><b>The spine.</b> One authoritative record every process writes to. Nothing happens outside it.</li>
+     <li><b>A closed-loop, queryable company.</b> Our own operations are structured data, so the company can be asked questions and answer from evidence rather than from someone's memory. Every human judgment is captured with its reasoning, and that class of exception stops needing a person.</li>
+     <li><b>Agent-to-agent interoperability.</b> Built on emerging open standards rather than a proprietary island, so what we operate connects to what customers and partners run.</li>
+   </ul>
+
+   <h4>Standards adopted deliberately rather than invented</h4>
+   <ul>
+     <li>OAuth 2.1 with token exchange, for delegated authority.</li>
+     <li>The current Model Context Protocol authorization profile, for tool access.</li>
+     <li>BIP-340 Schnorr signatures for actor identity &mdash; implemented and verified against the full official test-vector set, and independently cross-checked.</li>
+     <li>Append-only Postgres with cryptographic hash chaining and external anchoring, for the record.</li>
+     <li>NIST's AI Risk Management Framework as the documentation spine, with ISO/IEC 42001 and SOC 2 Type II as the attestation path.</li>
+     <li>EU AI Act Article 50 disclosure, applied everywhere by default.</li>
+   </ul>
+   <p>This is the deepest part of the deck. It is still business English &mdash; no code, no architecture diagrams. Go this deep only as far as the room stays with you, but be ready for all of it: a technical person reading over the banker's shoulder should recognise it as real.</p>
+
+   <h4>Define &ldquo;operating license&rdquo; &mdash; the phrase means nothing without it</h4>
+   <p>An operating license is an internal permission gating what the system may do at all. Three exist:</p>
+   <ul>
+     <li>Moving money.</li>
+     <li>Acting without human approval.</li>
+     <li>Sending communications unsupervised.</li>
+   </ul>
+   <p>Each stays unsigned until its preconditions are met, and the refusal is written into the source code rather than a setting someone can toggle.</p>
+   <p class="flag"><span class="ph">[Fausto: current signature status of each]</span></p>
+
+   <h4>Close on the principle</h4>
+   <p class="say">We won't connect a rail we can be robbed through.</p>
+   <p>The refusal is the feature: judgment stays human, execution becomes automated, inside limits it cannot exceed. Do not suggest AI makes human judgment obsolete &mdash; the thesis is the opposite, and this room will hear the difference.</p>
+ </div></aside>
+</section>
+
+<!-- ========================= 07 · THE ASK ========================= -->
+<section class="slide dark" data-title="The ask">
+ <div class="stage">
+  <header class="top"><span class="eyebrow">The ask</span><span class="folio">07 / 07</span></header>
+  <div class="body">
+    <div class="stack-head">
+    <h1>This is where credit belongs.</h1>
+    <div class="motif-row">
+      <svg class="motif" viewBox="548 198 104 160" aria-hidden="true"><path d="M556.256 350.474C568.901 308.721 585.069 264.239 641.322 207.986" fill="none" stroke="#7B6649" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>
+      <span class="hair"></span>
     </div>
-  </section>
+    </div>
+    <div class="figures" style="grid-template-columns:1fr 2fr">
+      <div class="figure">
+        <span class="n"><span class="ph">[Amount]</span></span>
+        <span class="d"><span class="ph">[Instrument]</span> &middot; <span class="ph">[Terms]</span></span>
+      </div>
+      <ul class="anchors two" style="align-self:end">
+        <li>Engineering <span class="ph">[%]</span></li>
+        <li>Trust and compliance <span class="ph">[%]</span></li>
+        <li>Go-to-market <span class="ph">[%]</span></li>
+        <li>Operations <span class="ph">[%]</span></li>
+      </ul>
+    </div>
+  </div>
+  <footer class="foot foot-brand">
+    <svg class="wordmark-sm" viewBox="0 0 4426 500" role="img" aria-label="PeanutButter"><use href="#pb-word-rev"/></svg>
+    <span>September 2026</span>
+  </footer>
+ </div>
+ <aside class="notes"><div class="notes-inner">
+   <div class="notes-head"><span>07 &middot; The ask</span><span>Speaker notes</span></div>
+
+   <h4>One line only &mdash; do not let this become a section</h4>
+   <p class="say">Doing this work means holding a business's cash cycle: what it owes, to whom, and when. That is where credit belongs, and it is why this company ends up adjacent to a bank rather than competing with one.</p>
+   <p>Say it once and move to the ask. This is where the audience already is &mdash; they sell payments, receivables and vendor management to their own clients. The point is that a customer of ours moves more volume through them, not less. We operate the layer above the treasury stack a bank provides. We are not a fintech encroaching on it.</p>
+   <p>Do not name banking partners. There are none to name.</p>
+
+   <h4>The ask</h4>
+   <p>Raising <span class="ph">[Amount]</span> on <span class="ph">[Instrument]</span> at <span class="ph">[Terms]</span>.</p>
+
+   <h4>Use of funds</h4>
+   <ul>
+     <li>Engineering &mdash; <span class="ph">[%]</span></li>
+     <li>The trust and compliance path: SOC 2, ISO 42001, insurance &mdash; <span class="ph">[%]</span></li>
+     <li>Go-to-market and first customers &mdash; <span class="ph">[%]</span></li>
+     <li>Operations &mdash; <span class="ph">[%]</span></li>
+   </ul>
+
+   <h4>What the money buys &mdash; milestones, not months</h4>
+   <p>State what will be true when it is spent, not how many months it lasts.</p>
+   <ul>
+     <li><span class="ph">[Fausto to fill &mdash; what the product does then that it cannot do now]</span></li>
+     <li><span class="ph">[Fausto to fill &mdash; attestation status reached]</span></li>
+     <li><span class="ph">[Fausto to fill &mdash; customers served and revenue run rate]</span></li>
+     <li><span class="ph">[Fausto to fill &mdash; which operating licenses are signed]</span></li>
+   </ul>
+
+   <h4>What this room is deciding</h4>
+   <p>They are relationship bankers, not investors and not risk underwriters. They are deciding whether this is a company and a team worth banking early and keeping through growth. Clarity about the actual business beats vision. Operational maturity reads as &ldquo;this company won't lose money and call us at 2am.&rdquo; Everything on slides five and six is there for that sentence.</p>
+ </div></aside>
+</section>
 
 </div>
 
-<div class="hints" id="hints">← → · space · F for fullscreen</div>
+<div class="hints" id="hints">&#8592; &#8594; move &nbsp;&middot;&nbsp; N notes &nbsp;&middot;&nbsp; F fullscreen</div>
 
 <script>
 (function(){
   var deck = document.getElementById('deck');
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-  var hints = document.getElementById('hints');
   var current = 0;
-  var faded = false;
 
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function isPaged(){
-    return window.matchMedia('(min-width: 861px)').matches &&
-           window.matchMedia('(orientation: landscape)').matches;
+  function mark(){
+    slides.forEach(function(s, i){ s.classList.toggle('is-current', i === current); });
   }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && e.intersectionRatio > 0.5){
+        current = slides.indexOf(e.target);
+        mark();
+      }
+    });
+  }, {threshold:[0.5]});
+  slides.forEach(function(s){ io.observe(s); });
+  mark();
 
   function go(i){
     i = Math.max(0, Math.min(slides.length - 1, i));
-    current = i;
-    slides[i].scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
-    fade();
+    current = i; mark();
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    slides[i].scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
   }
-
-  function fade(){
-    if(faded) return;
-    faded = true;
-    hints.classList.add('gone');
-  }
-
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting && e.intersectionRatio > 0.5){
-          current = slides.indexOf(e.target);
-        }
-      });
-    }, {root: deck, threshold: [0.5, 0.6]});
-    slides.forEach(function(s){ io.observe(s); });
-  }
-
-  deck.addEventListener('scroll', fade, {passive:true, once:true});
 
   document.addEventListener('keydown', function(e){
     if(e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
-    if(k === 'f' || k === 'F'){
-      e.preventDefault();
-      if(document.fullscreenElement){ document.exitFullscreen(); }
-      else if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen(); }
-      return;
-    }
-    if(!isPaged()) return;
     if(k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'Spacebar'){
       e.preventDefault(); go(current + 1);
     } else if(k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp'){
       e.preventDefault(); go(current - 1);
-    } else if(k === 'Home'){
-      e.preventDefault(); go(0);
-    } else if(k === 'End'){
-      e.preventDefault(); go(slides.length - 1);
+    } else if(k === 'Home'){ e.preventDefault(); go(0); }
+    else if(k === 'End'){ e.preventDefault(); go(slides.length - 1); }
+    else if(k === 'n' || k === 'N'){
+      e.preventDefault(); document.body.classList.toggle('notes-open');
+    } else if(k === 'Escape'){
+      document.body.classList.remove('notes-open');
+    } else if(k === 'f' || k === 'F'){
+      e.preventDefault();
+      if(document.fullscreenElement){ document.exitFullscreen(); }
+      else if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen(); }
     }
   });
 })();
